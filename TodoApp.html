@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif; text-align: center; background-color:ghostwhite;">
+    <div class="container mt-4">
+        <h1>Todo App</h1>
+        <div class="input-group mb-3">
+            <input type="text" id="taskInput" class="form-control" placeholder="Introducir Tarea...">
+            <div class="input-group-append">
+                <button onclick="addTask()" class="btn btn-primary">Agregar Tarea</button>
+            </div>
+        </div>
+        <br>
+        <button onclick="clearTasks()" class="btn btn-danger">Borrar Todo</button>
+        <button onclick="saveTasks()" class="btn btn-success">Guardar Tarea</button>
+        <div style="text-align: justify;">
+            <ul id="taskList" class="list-group mt-3"></ul>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function addTask() {
+            var taskInput = document.getElementById("taskInput");
+            var taskText = taskInput.value;
+            if (taskText.trim() !== "") {
+                var taskList = document.getElementById("taskList");
+                var newTask = document.createElement("li");
+                newTask.textContent = taskText;
+                newTask.classList.add("list-group-item");
+                taskList.appendChild(newTask);
+                taskInput.value = "";
+            }
+        }
+
+        function saveTasks() {
+            var taskList = document.getElementById("taskList");
+            var tasks = taskList.getElementsByTagName("li");
+            var content = "";
+            for (var i = 0; i < tasks.length; i++) {
+                content += tasks[i].textContent + "\n";
+            }
+            var blob = new Blob([content], { type: 'text/plain' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "task_list.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function clearTasks() {
+            var taskList = document.getElementById("taskList");
+            while (taskList.firstChild) {
+                taskList.removeChild(taskList.firstChild);
+            }
+        }
+    </script>
+</body>
+</html>
